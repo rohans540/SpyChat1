@@ -1,6 +1,6 @@
 #importing necessary variables from the file name spy_details
 from spy_details import spy
-
+#============================================SPY_CHAT METHOD=========================================================
 #start_chat method: used to add chat functionality for the user
 
 def start_chat(spy):
@@ -65,7 +65,7 @@ def start_chat(spy):
     else:
         print "Ooops! you\'re age is not appropriate to be a spy\n"
 
-
+#=================================================ADD_STATUS METHOD===================================================
 #add_status method to set a new status message or to select an old one
 
 def add_status(current_status_msg):
@@ -125,7 +125,7 @@ def add_status(current_status_msg):
 
     return updated_status_msg
 
-
+#=========================================================ADD_FRIEND METHOD============================================
 #add_friend Method definition input:None, output:a new friend added
 
 def add_friend():
@@ -181,6 +181,37 @@ def add_friend():
 
     return len(friends)
 
+#=================================================SELECT_A_FRIEND METHOD================================================
+
+#Method select_a_friend to select a friend from friends list to chat
+
+def select_a_friend():
+
+    frno = 0
+
+    print "Choose a friend from the list.\n"
+
+    for friend in friends:
+        print "\tPress %d for '%s'.\n"%(frno + 1, friend['name'])
+        frno = frno + 1
+
+    while True:
+
+        choice = input('Enter a choice from the above list:\n')
+
+        if int(choice) > len(friends):
+            print "Invalid choice\please try again\n"
+            continue
+        else:
+
+            frnd = friends[choice - 1]
+
+        print "You selected your friend %s.\n"%(frnd['name'])
+
+        return choice - 1
+
+
+#======================================================MAIN BODY========================================================
 #main started
 
 STATUS_MSG = ['My name is bond, james bond', 'Shaken! not stirred.', 'Incredible India.']
