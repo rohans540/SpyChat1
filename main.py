@@ -1,7 +1,68 @@
 #importing necessary variables from the file name spy_details
 from spy_details import spy
 from steganography.steganography import Steganography
-#============================================SPY_CHAT METHOD=========================================================
+from datetime import datetime
+
+#================================================SEND_MSG METHOD=======================================================
+#send_msg method to send a secret message encoded in an image
+
+def send_msg():
+
+#selecting a friend to chat using select_a_friend method
+    friend_choice = select_a_friend()
+
+    original_img = input('What is the name of the image:\n')
+
+    output_path = 'output.jpg'
+
+    txt = input('Type your message here, don\'t worry it will be kept secret:\n')
+
+#encoding the message in the image using encode method
+    Steganography.encode(original_img, output_path, txt)
+
+    new_chat = {
+
+        'msg':txt,
+        'time':datetime.now(),
+        'sent_by_me': True
+    }
+
+    friends[friend_choice]['chats'].append(new_chat)
+
+    print "Your secret message is ready to be send\n"
+
+
+
+
+
+#====================================================READ_MSG METHOD====================================================
+#read_msg method to read a secret message encoded in an image by decoding it
+
+def read_msg ():
+
+#selecting a friend to read his message by calling select_a_friend method
+    sender = select_a_friend()
+
+    output_path = input('What is the name of the file:\n')
+
+#decoding the text encoded in the image using decode method
+    secret_txt = Steganography.decode(output_path)
+
+    new_chat = {
+
+        'msg':secret_txt,
+        'time':datetime.now()
+        'sent_by_me':False
+    }
+
+    friends[sender]['chats'].append(new_chat)
+
+    print "Your secret message has been saved.\n"
+
+
+
+
+#============================================START_CHAT METHOD=========================================================
 #start_chat method: used to add chat functionality for the user
 
 def start_chat(spy):
