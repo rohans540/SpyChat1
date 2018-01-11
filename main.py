@@ -1,5 +1,6 @@
 #importing necessary variables from the file name spy_details
 from spy_details import spy
+from steganography.steganography import Steganography
 #============================================SPY_CHAT METHOD=========================================================
 #start_chat method: used to add chat functionality for the user
 
