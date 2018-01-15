@@ -1,33 +1,31 @@
-spy = {
-    'name':'Bond',
-    'salutation':'Mr',
-    'age':18,
-    'rating':4.2,
-    'mode':True
+#importing datetime class
+from datetime import datetime
+#creating Spy class
+class Spy:
 
-}
+    def __init__(self, name, salutation, age, rating):
+        self.name = name
+        self.salutation = salutation
+        self.age = age
+        self.rating = rating
+        self.mode = True
+        self.chats = []
+        self.current_status_msg = None
 
-friends = [
-    {
-        'name':'Rohan',
-        'salutation':'Mr',
-        'rating':4.9,
-        'age':23,
-        'chats':[]
-    },
-    {
-        'name':'Raju',
-        'salutation':'Mr',
-        'rating':4.2,
-        'age':24,
-        'chats':[]
-    },
+#instantiation of Spy
+spy = Spy('Bond', 'Mr ', 23, 4.9)
 
-    {
-        'name':'Surbhi',
-        'salutation':'Mr',
-        'rating':4.2,
-        'age':23,
-        'chats':[]
-    }
-]
+#instantiating friends using class Spy
+frnd1 = Spy('Rohan', 'Mr ', 23, 4.9)
+frnd2 = Spy('Raju', 'Mr ', 24, 4.2)
+frnd3 = Spy('Surbhi', 'Miss ', 23, 4.5)
+frnd4 = Spy('Rishav', 'Mr ', 23, 4.8)
+
+#list of friends containing frnd objects
+friends = [frnd1, frnd2, frnd3, frnd4]
+
+class Chatmessage:
+    def __init__(self, msg, sent_by_me):
+        self.msg = msg
+        self.time = datetime.now
+        self.sent_by_me = sent_by_me

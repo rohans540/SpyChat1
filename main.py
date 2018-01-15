@@ -1,5 +1,7 @@
-#importing necessary variables from the file name spy_details
+#importing default spy object
 from spy_details import spy
+#import classes Spy and Chatmessage from spy_details
+from spy_details import Spy,Chatmessage
 from steganography.steganography import Steganography
 from datetime import datetime
 
@@ -20,14 +22,9 @@ def send_msg():
 #encoding the message in the image using encode method
     Steganography.encode(original_img, output_path, txt)
 
-    new_chat = {
+    newchat = Chatmessage()
 
-        'msg':txt,
-        'time':datetime.now(),
-        'sent_by_me': True
-    }
-
-    friends[friend_choice]['chats'].append(new_chat)
+    friends[friend_choice].chats.append(newchat)
 
     print "Your secret message is ready to be send\n"
 
@@ -48,14 +45,9 @@ def read_msg ():
 #decoding the text encoded in the image using decode method
     secret_txt = Steganography.decode(output_path)
 
-    new_chat = {
+    newchat1 = Chatmessage()
 
-        'msg':secret_txt,
-        'time':datetime.now()
-        'sent_by_me':False
-    }
-
-    friends[sender]['chats'].append(new_chat)
+    friends[sender].chats.append(newchat1)
 
     print "Your secret message has been saved.\n"
 
@@ -68,13 +60,13 @@ def read_msg ():
 def start_chat(spy):
 
     current_status_msg = None
-    spy['name'] = spy['salutation']+" "+spy['name']
+    spy.name = spy.salutation+" "+spy.name
 
 
     #age validation for spy
-    if spy['age'] > 12 and spy['age'] < 40:
+    if spy.age > 12 and spy.age < 40:
 
-        print "Authentication complete.\nWelcome '%s', Age: %d with rating of %.1f. Proud to have you onboard"%(spy['name'], spy['age'], spy['rating'])
+        print "Authentication complete.\nWelcome '%s', Age: %d with rating of %.1f. Proud to have you onboard"%(spy.name, spy.age, spy.rating)
 
 
         #loop to keep the menu
@@ -133,8 +125,8 @@ def start_chat(spy):
 def add_status(current_status_msg):
     global STATUS_MSG
 
-    if current_status_msg != None:
-        print "Your current status message is '%s'"%current_status_msg
+    if spy.current_status_msg != None:
+        print "Your current status message is '%s'"%spy.current_status_msg
     else:
         print "You don\'t have any status message currently\n"
 
@@ -194,31 +186,26 @@ def add_friend():
 
 
     #use of dictionary to store details of a new friend
-    newfriend = {
-        'name':'',
-        'salutation':'',
-        'age':0,
-        'rating':0.0
-    }
+    newfriend = Spy()
 
-    newfriend['name'] = raw_input("Please add your friend's name:\n")
-    newfriend['salutation'] = raw_input("What should i call him/her Mr or Miss:\n")
+    newfriend.name = raw_input("Please add your friend's name:\n")
+    newfriend.salutation = raw_input("What should i call him/her Mr or Miss:\n")
 
-    newfriend['name'] = newfriend['salutation']+" "+newfriend['name']
+    newfriend.name = newfriend.salutation+" "+newfriend.name
 
-    newfriend['age'] = input('Enter your friend\'s age:\n')
+    newfriend.age = input('Enter your friend\'s age:\n')
 
-    newfriend['rating'] = input('What\'s your friends spy rating:\n')
+    newfriend.rating = input('What\'s your friends spy rating:\n')
 
 
 
 
         #validation of a friend
 
-    if len(newfriend['name']) > 0 and newfriend['age'] > 12 and newfriend['age'] < 40 and newfriend['rating'] >= spy['rating'] and newfriend['name'].isalpha():
+    if len(newfriend.name) > 0 and newfriend.age > 12 and newfriend.age < 40 and newfriend.rating >= spy.rating and newfriend.name.isalpha():
         friends.append(newfriend)
 
-        print "%s is added to your friend list as a new spy\n"%(newfriend['name'])
+        print "%s is added to your friend list as a new spy\n"%(newfriend.name)
 
     else:
         #if friend is not eligible to be a spy
@@ -254,7 +241,7 @@ def select_a_friend():
     print "Choose a friend from the list.\n"
 
     for friend in friends:
-        print "\tPress %d for '%s'.\n"%(frno + 1, friend['name'])
+        print "\tPress %d for '%s'.\n"%(frno + 1, friend.name)
         frno = frno + 1
 
     while True:
@@ -268,7 +255,7 @@ def select_a_friend():
 
             frnd = friends[choice - 1]
 
-        print "You selected your friend %s.\n"%(frnd['name'])
+        print "You selected your friend %s.\n"%(frnd.name)
 
         return choice - 1
 
@@ -284,7 +271,7 @@ friends = []
 print "Welcome to spychat\n Lets get started"
 
 
-question = raw_input("Do you want to continue as %s %s say Y for yes or N for no:\n"%(spy['salutation'], spy['name']))
+question = raw_input("Do you want to continue as %s %s say Y for yes or N for no:\n"%(spy.salutation, spy.name))
 
 existing = raw_input(question)
 
@@ -298,41 +285,35 @@ elif existing.upper() == 'N':
 
     #if a new spy comes to chat, then save her details and redirect to spychat menu
 
-    spy = {
-        'name':'',
-        'salutation':'',
-        'age':0,
-        'rating':0.0,
-        'mode': False
-    }
+    spy = Spy('', '', 0, 0.0,)
 
 #reading spy name
-    spy['name'] = raw_input("Hey! Welcome to spychat\n You must tell me your name first:\n")
+    spy.name = raw_input("Hey! Welcome to spychat\n You must tell me your name first:\n")
 
 #name validation
-    if len(spy['name']) > 0 and spy['name'].isalpha():
+    if len(spy.name) > 0 and spy.name.isalpha():
 
-        print "Welcome '%s' Glad to have you back with us.\n"%(spy['name'])
+        print "Welcome '%s' Glad to have you back with us.\n"%(spy.name)
 
-        spy['salutation'] = raw_input("What should i call you Mr or Miss:\n")
+        spy.salutation = raw_input("What should i call you Mr or Miss:\n")
 
 #concatenating salutation and name
-        spy['name'] = spy['salutation']+" "+spy['name']
+        spy.name = spy.salutation+" "+spy.name
 
-        print "Alright %s i would like to know a little bit more about you before we proceed..\n"%(spy['name'])
+        print "Alright %s i would like to know a little bit more about you before we proceed..\n"%(spy.name)
 
-        spy['age'] = input('Hey %s what is your Age?\n'%(spy['name']))
+        spy.age = input('Hey %s what is your Age?\n'%(spy.name))
 
-        spy['age'] = int(spy['age'])
+        spy.age = int(spy.age)
 
-        if spy['age'] > 12 and spy['age'] < 40:
+        if spy.age > 12 and spy.age < 40:
 
 
-            spy['rating'] = input("%s What is your spy rating?\n"%(spy['name']))
+            spy.rating = input("%s What is your spy rating?\n"%(spy.name))
 
-            if spy['rating'] > 4.0 and spy['rating'] < 5.0:
+            if spy.rating > 4.0 and spy.rating < 5.0:
                 print "Great! Ace\n"
-            elif spy['rating'] > 3.0 and spy['rating'] < 4.0:
+            elif spy.rating > 3.0 and spy.rating < 4.0:
                 print "Wow! Soon to be an Ace\n"
             else:
                 print "You can always do better\n"
