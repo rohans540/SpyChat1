@@ -24,6 +24,8 @@ frnd4 = Spy('Rishav', 'Mr ', 23, 4.8)
 #list of friends containing frnd objects
 friends = [frnd1, frnd2, frnd3, frnd4]
 
+
+#class Chatmessage
 class Chatmessage:
     def __init__(self, msg, sent_by_me):
         self.msg = msg

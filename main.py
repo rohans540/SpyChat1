@@ -22,7 +22,9 @@ def send_msg():
 #encoding the message in the image using encode method
     Steganography.encode(original_img, output_path, txt)
 
-    newchat = Chatmessage()
+    sent_by_me = True
+
+    newchat = Chatmessage(txt, sent_by_me)
 
     friends[friend_choice].chats.append(newchat)
 
@@ -45,9 +47,13 @@ def read_msg ():
 #decoding the text encoded in the image using decode method
     secret_txt = Steganography.decode(output_path)
 
-    newchat1 = Chatmessage()
+    sent_by_me = False
+
+    newchat1 = Chatmessage(secret_txt, sent_by_me)
 
     friends[sender].chats.append(newchat1)
+
+    print secret_txt+'\n'
 
     print "Your secret message has been saved.\n"
 
@@ -94,12 +100,12 @@ def start_chat(spy):
 
             elif choice == '3':
                 #functionality to sending a secret message
-                print "check3\n"
+                send_msg()
 
 
             elif choice == '4':
                 #reading personal message
-                print "check4\n"
+                read_msg()
 
 
             elif choice == '5':
@@ -110,7 +116,7 @@ def start_chat(spy):
             elif choice == '6':
                 #exit from spychat
                 print "Thank you for using spychat\noyou\'re logging out\n"
-                spy_mode = False
+                spy.mode = False
                 show_menu = False
 
             else:
@@ -122,9 +128,9 @@ def start_chat(spy):
 #=================================================ADD_STATUS METHOD===================================================
 #add_status method to set a new status message or to select an old one
 
-def add_status(current_status_msg):
-    global STATUS_MSG
+def add_status():
 
+    global STATUS_MSG
     if spy.current_status_msg != None:
         print "Your current status message is '%s'"%spy.current_status_msg
     else:
@@ -164,6 +170,7 @@ def add_status(current_status_msg):
             while True:
 
                 msg_selection = raw_input("Choose from the above messages:\n")
+                msg_selection = int(msg_selection)
                 if len(STATUS_MSG) >= msg_selection:
                     updated_status_msg = STATUS_MSG[msg_selection - 1]
                     break
@@ -186,47 +193,51 @@ def add_friend():
 
 
     #use of dictionary to store details of a new friend
-    newfriend = Spy()
+    newfriend = Spy('','', 0, 0.0)
 
-    newfriend.name = raw_input("Please add your friend's name:\n")
-    newfriend.salutation = raw_input("What should i call him/her Mr or Miss:\n")
+    adding_more = True
 
-    newfriend.name = newfriend.salutation+" "+newfriend.name
+    while adding_more:
 
-    newfriend.age = input('Enter your friend\'s age:\n')
+        newfriend.name = raw_input("Please add your friend's name:\n")
+        newfriend.salutation = raw_input("What should i call him/her Mr or Miss:\n")
 
-    newfriend.rating = input('What\'s your friends spy rating:\n')
+        newfriend.name = newfriend.salutation+" "+newfriend.name
+
+        newfriend.age = input('Enter your friend\'s age:\n')
+
+        newfriend.rating = input('What\'s your friends spy rating:\n')
 
 
 
 
         #validation of a friend
 
-    if len(newfriend.name) > 0 and newfriend.age > 12 and newfriend.age < 40 and newfriend.rating >= spy.rating and newfriend.name.isalpha():
-        friends.append(newfriend)
+        if len(newfriend.name) > 0 and newfriend.age > 12 and newfriend.age < 40 and newfriend.rating >= spy.rating and newfriend.name.isalpha():
+            friends.append(newfriend)
 
-        print "%s is added to your friend list as a new spy\n"%(newfriend.name)
-
-    else:
-        #if friend is not eligible to be a spy
-
-        print "Sorry! Your friend do not meet our criteria to be a your spy friend\n"
-
-    while True:
-            #to add more friends
-
-        more = raw_input("Do you want to add more spy friends (Y/N)?\n")
-
-        if more.upper() == 'N':
-            newfriend = False
-            break
-
-        elif more.upper() == 'Y':
-
-            break
+            print "%s is added to your friend list as a new spy\n"%(newfriend.name)
 
         else:
-            print "Press a valid key Y or N\n"
+            #if friend is not eligible to be a spy
+
+            print "Sorry! Your friend do not meet our criteria to be a your spy friend\n"
+
+        while True:
+                #to add more friends
+
+            more = raw_input("Do you want to add more spy friends (Y/N)?\n")
+
+            if more.upper() == 'N':
+                adding_more = False
+                break
+
+            elif more.upper() == 'Y':
+
+                break
+
+            else:
+                print "Press a valid key Y or N\n"
 
     return len(friends)
 
@@ -235,8 +246,6 @@ def add_friend():
 #Method select_a_friend to select a friend from friends list to chat
 
 def select_a_friend():
-
-    frno = 0
 
     print "Choose a friend from the list.\n"
 
@@ -275,53 +284,53 @@ question = raw_input("Do you want to continue as %s %s say Y for yes or N for no
 
 existing = raw_input(question)
 
-if existing.upper() == 'Y':
+if existing == 'Y' or existing == 'y':
 
     #spychat menu if default spy comes to chat
 
     start_chat(spy)
 
-elif existing.upper() == 'N':
+elif existing == 'N' or existing == 'n':
 
     #if a new spy comes to chat, then save her details and redirect to spychat menu
 
     spy = Spy('', '', 0, 0.0,)
 
 #reading spy name
-    spy.name = raw_input("Hey! Welcome to spychat\n You must tell me your name first:\n")
+    name = raw_input("Hey! Welcome to spychat\n You must tell me your name first:\n")
 
 #name validation
-    if len(spy.name) > 0 and spy.name.isalpha():
+    if len(name) > 0 and name.isalpha():
 
-        print "Welcome '%s' Glad to have you back with us.\n"%(spy.name)
+        print "Welcome '%s' Glad to have you back with us.\n"%(name)
 
-        spy.salutation = raw_input("What should i call you Mr or Miss:\n")
+        salutation = raw_input("What should i call you Mr or Miss:\n")
 
-#concatenating salutation and name
-        spy.name = spy.salutation+" "+spy.name
+        print "Alright %s %s i would like to know a little bit more about you before we proceed..\n"%(salutation, name)
 
-        print "Alright %s i would like to know a little bit more about you before we proceed..\n"%(spy.name)
-
-        spy.age = input('Hey %s what is your Age?\n'%(spy.name))
-
-        spy.age = int(spy.age)
-
-        if spy.age > 12 and spy.age < 40:
+        age = input('Hey %s %s what is your Age?\n'%(salutation, name))
 
 
-            spy.rating = input("%s What is your spy rating?\n"%(spy.name))
+        if age > 12 and age < 40:
 
-            if spy.rating > 4.0 and spy.rating < 5.0:
+
+            rating = input("%s %s What is your spy rating?\n"%(salutation, name))
+
+            if rating > 4.0 and rating < 5.0:
                 print "Great! Ace\n"
-            elif spy.rating > 3.0 and spy.rating < 4.0:
+            elif rating > 3.0 and rating < 4.0:
                 print "Wow! Soon to be an Ace\n"
             else:
                 print "You can always do better\n"
+
+            spy = Spy(name, salutation, age, rating)
+            start_chat(spy)
+
         else:
-            print "Ooops! we regret to tell you %s that your age is not appropriate to be a spy\n"%(spy['name'])
+            print "Ooops! we regret to tell you %s %s that your age is not appropriate to be a spy\n"%(salutation, name)
 
     else:
-        print "Ooops! you have entered an anvalid name\nplease try again: "
+        print "Ooops! you have entered an invalid name\nplease try again: "
 
 else:
     print "Ooops! you have provided an invalid input\nplease try again\n"
