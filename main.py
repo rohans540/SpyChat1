@@ -1,5 +1,5 @@
 #importing default spy object
-from spy_details import spy
+from spy_details import spy, friends
 #import classes Spy and Chatmessage from spy_details
 from spy_details import Spy,Chatmessage
 from steganography.steganography import Steganography
@@ -13,11 +13,11 @@ def send_msg():
 #selecting a friend to chat using select_a_friend method
     friend_choice = select_a_friend()
 
-    original_img = input('What is the name of the image:\n')
+    original_img = raw_input('What is the name of the image:\n')
 
     output_path = 'output.jpg'
 
-    txt = input('Type your message here, don\'t worry it will be kept secret:\n')
+    txt = raw_input('Type your message here, don\'t worry it will be kept secret:\n')
 
 #encoding the message in the image using encode method
     Steganography.encode(original_img, output_path, txt)
@@ -42,7 +42,7 @@ def read_msg ():
 #selecting a friend to read his message by calling select_a_friend method
     sender = select_a_friend()
 
-    output_path = input('What is the name of the file:\n')
+    output_path = raw_input('What is the name of the file:\n')
 
 #decoding the text encoded in the image using decode method
     secret_txt = Steganography.decode(output_path)
@@ -53,7 +53,7 @@ def read_msg ():
 
     friends[sender].chats.append(newchat1)
 
-    print secret_txt+'\n'
+    print '\n\n'+secret_txt+'\n'
 
     print "Your secret message has been saved.\n"
 
@@ -89,7 +89,7 @@ def start_chat(spy):
             choice = raw_input()
 
             if choice == '1':
-                current_status_msg = add_status(current_status_msg)
+                current_status_msg = add_status()
                 print "Status Updated successfully\n"
 
             elif choice == '2':
@@ -247,6 +247,8 @@ def add_friend():
 
 def select_a_friend():
 
+    frno = 0
+
     print "Choose a friend from the list.\n"
 
     for friend in friends:
@@ -257,7 +259,7 @@ def select_a_friend():
 
         choice = input('Enter a choice from the above list:\n')
 
-        if int(choice) > len(friends):
+        if choice > len(friends):
             print "Invalid choice\please try again\n"
             continue
         else:
@@ -265,8 +267,9 @@ def select_a_friend():
             frnd = friends[choice - 1]
 
         print "You selected your friend %s.\n"%(frnd.name)
+        break
 
-        return choice - 1
+    return choice - 1
 
 
 #======================================================MAIN BODY========================================================
@@ -274,13 +277,11 @@ def select_a_friend():
 
 STATUS_MSG = ['My name is bond, james bond', 'Shaken! not stirred.', 'Incredible India.']
 
-friends = []
-
 
 print "Welcome to spychat\n Lets get started"
 
 
-question = raw_input("Do you want to continue as %s %s say Y for yes or N for no:\n"%(spy.salutation, spy.name))
+question = "Do you want to continue as %s %s say Y for yes or N for no:\n"%(spy.salutation, spy.name)
 
 existing = raw_input(question)
 
