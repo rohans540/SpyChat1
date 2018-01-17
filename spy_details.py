@@ -13,7 +13,7 @@ class Spy:
         self.current_status_msg = None
 
 #instantiation of Spy
-spy = Spy('Bond', 'Mr ', 23, 4.9)
+spy = Spy('Bond', 'Mr ', 23, 4.0)
 
 #instantiating friends using class Spy
 frnd1 = Spy('Rohan', 'Mr ', 23, 4.9)

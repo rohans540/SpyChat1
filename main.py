@@ -4,6 +4,19 @@ from spy_details import spy, friends
 from spy_details import Spy,Chatmessage
 from steganography.steganography import Steganography
 from datetime import datetime
+import csv
+
+#=================================================load_friends method==================================================
+#load_friends method used to load all the friends data from the friends.csv file
+
+def load_friends():
+    with open('friends.csv', 'rb') as friends_data:
+        reader = csv.reader(friends_data)
+
+
+        for row in reader:
+            spy = Spy(name = row[0],salutation=row[1], age=int(row[2]), rating=float(row[3]))
+            friends.append(spy)
 
 #================================================SEND_MSG METHOD=======================================================
 #send_msg method to send a secret message encoded in an image
@@ -115,7 +128,7 @@ def start_chat(spy):
 
             elif choice == '6':
                 #exit from spychat
-                print "Thank you for using spychat\noyou\'re logging out\n"
+                print "Thank you for using spychat\nyou\'re logging out\n"
                 spy.mode = False
                 show_menu = False
 
@@ -213,10 +226,14 @@ def add_friend():
 
         #validation of a friend
 
-        if len(newfriend.name) > 0 and newfriend.age > 12 and newfriend.age < 40 and newfriend.rating >= spy.rating and newfriend.name.isalpha():
+        if len(newfriend.name) > 0 and newfriend.age > 12 and newfriend.age<=40 and newfriend.rating >= spy.rating and newfriend.name.isalpha():
             friends.append(newfriend)
 
-            print "%s is added to your friend list as a new spy\n"%(newfriend.name)
+            print "%s is added to your friend list as a new spy\n"%newfriend.name
+            with open('friends.csv', 'a') as friend_details:
+                writer = csv.writer(friend_details)
+                writer.writerow([newfriend.name, newfriend.salutation, newfriend.age, newfriend.rating, newfriend.mode])
+
 
         else:
             #if friend is not eligible to be a spy
@@ -286,6 +303,9 @@ question = "Do you want to continue as %s %s say Y for yes or N for no:\n"%(spy.
 existing = raw_input(question)
 
 if existing == 'Y' or existing == 'y':
+
+    #load_friends method testing
+    load_friends()
 
     #spychat menu if default spy comes to chat
 
