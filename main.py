@@ -2,6 +2,7 @@
 from spy_details import spy, friends
 #import classes Spy and Chatmessage from spy_details
 from spy_details import Spy,Chatmessage
+#importing steganography library to use its services
 from steganography.steganography import Steganography
 from datetime import datetime
 import csv
@@ -47,7 +48,23 @@ def send_msg():
 
     friends[friend_choice].chats.append(newchat)
 
-    print colored("Your secret message is ready to be send\n")
+    print colored("Your secret message is ready to be send\n", 'blue')
+
+#==================================================SEND_HELP_MESSAGE====================================================
+
+def send_help_msg():
+
+#selecting the friend
+    friend_choice = select_a_friend()
+
+#the text response
+    txt = "Don't panic I am on my way to reach you!"
+
+#creating new chat
+    newchat = Chatmessage(colored(txt,'red'), True)
+
+#appending the chat
+    friends[friend_choice].chats.append(newchat)
 
 
 
@@ -61,20 +78,50 @@ def read_msg ():
 #selecting a friend to read his message by calling select_a_friend method
     sender = select_a_friend()
 
-    output_path = raw_input(colored('What is the name of the file:\n', "blue"))
+    output_path = raw_input(colored('What is the name of the file you want to decode:\n', "blue"))
 
+
+    try:
 #decoding the text encoded in the image using decode method
-    secret_txt = Steganography.decode(output_path)
+        secret_txt = Steganography.decode(output_path)
+        print colored("The secret message is:\n\t", 'blue')
+        print colored(secret_txt,'magenta')
 
-    sent_by_me = False
+    #converting the secret_txt to uppercase
+        new = (secret_txt.upper()).split()
 
-    newchat1 = Chatmessage(secret_txt, sent_by_me)
+#checking emergency templates for help
+        if "SOS" in new or "SAVE" in new or "HELP" in new or "ACCIDENT" in new or "RESCUE" in new or "ALERT" in new:
 
-    friends[sender].chats.append(newchat1)
+            print colored("!", 'grey', 'on_yellow'),
+            print colored("!", 'grey', 'on_yellow'),
+            print colored("!", 'grey', 'on_yellow')
 
-    print '\n\n'+secret_txt+'\n'
 
-    print colored("Your secret message has been saved.\n", "green")
+            print colored("Your friend the sender of this message need an emergency", 'green')
+            print colored("Please help your friend by sending him a helping message.\n", 'green')
+            print colored("Select that friend to send him a helping message.\n", 'green')
+
+#calling send_help_msg() to send the help
+            send_help_msg()
+
+            print colored("You have sent a message to help your friend", 'green')
+
+#creating new chat
+            new_chat = Chatmessage(secret_txt, False)
+#appending to chats
+            friends[sender].chats.append(new_chat)
+
+#if there is no emergency messages or call for help
+        else:
+            new_chat = Chatmessage(secret_txt, False)
+            friends[sender].chats.append(new_chat)
+            print colored("Your secret message has been saved.\n", 'green')
+
+#no message found exception
+    except TypeError:
+        print colored("Nothing to decode from the image\nsorry! there is no secret message", 'red')
+
 
 
 #====================================================READ_CHATS METHOD===================================================
